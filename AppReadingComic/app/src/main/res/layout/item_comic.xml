@@ -33,5 +33,5 @@
         android:gravity="center"
         android:text="Ten truyen tranh"
         android:textSize="14dp"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 </LinearLayout>
