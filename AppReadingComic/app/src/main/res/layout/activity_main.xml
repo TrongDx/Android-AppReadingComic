@@ -10,9 +10,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#363F44"
-        android:gravity="center">
+        android:background="#363F44">
 
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:padding="15dp"
+            android:layout_alignParentRight="true"
+            android:onClick="update"
+            android:src="@drawable/update"
+            app:tint="#fff" />
         <EditText
             android:id="@+id/edSearch"
             android:layout_width="match_parent"
