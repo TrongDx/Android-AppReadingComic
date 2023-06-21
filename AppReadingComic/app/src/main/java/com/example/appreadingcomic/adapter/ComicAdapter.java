@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,13 +19,12 @@ import com.example.appreadingcomic.object.Comic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComicAdapter extends ArrayAdapter<Comic> {
+public class ComicAdapter extends BaseAdapter {
     private Context ct;
     private ArrayList<Comic> arr;
-    public ComicAdapter(@NonNull Context context, int resource, @NonNull List<Comic> objects) {
-        super(context, resource, objects);
+    public ComicAdapter( Context context,ArrayList<Comic> arr) {
         this.ct = context;
-        this.arr = new ArrayList<>(objects);
+        this.arr = new ArrayList<>(arr);
     }
 
     //Tìm kiếm truyện
@@ -42,6 +42,22 @@ public class ComicAdapter extends ArrayAdapter<Comic> {
         }
         notifyDataSetChanged();
     }
+
+    @Override
+    public int getCount() {
+        return arr.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return arr.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -53,11 +69,9 @@ public class ComicAdapter extends ArrayAdapter<Comic> {
             Comic comic = this.arr.get(position);
 
             TextView nameComic = convertView.findViewById(R.id.txvNameComic);
-            TextView nameChap = convertView.findViewById(R.id.txvNameChap);
             ImageView imgComic = convertView.findViewById(R.id.imgComic);
 
             nameComic.setText(comic.getNameComic());
-            nameChap.setText(comic.getNameChap());
             Glide.with(this.ct).load(comic.getLinkComic()).into(imgComic);
         }
         return  convertView;
