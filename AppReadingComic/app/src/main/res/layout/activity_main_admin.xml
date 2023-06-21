@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="#363F44">
         <ImageView
-            android:id="@+id/btnMenu"
+            android:id="@+id/btnMenuAdmin"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:padding="15dp"
@@ -21,7 +20,7 @@
             app:tint="#fff"
             android:importantForAccessibility="no" />
         <ImageView
-            android:id="@+id/btnUser"
+            android:id="@+id/btnUserAdmin"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:padding="15dp"
@@ -30,29 +29,25 @@
             android:src="@drawable/user"
             app:tint="#fff"
             android:importantForAccessibility="no" />
-        <EditText
-            android:id="@+id/edSearch"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="80dp"
+        <Button
+            android:layout_gravity="center"
+            android:id="@+id/btnAddComic"
+            android:layout_marginLeft="120dp"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="80dp"
+            android:layout_marginRight="120dp"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/bg_edit"
-            android:gravity="center"
-            android:hint="Nhập tên truyện"
-            android:textColorHint="#fff"
-            android:textSize="20dp" />
+            android:text="Thêm truyện"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </Button>
     </RelativeLayout>
 
-    <GridView
-        android:id="@+id/gdvListComic"
+    <ListView
+        android:id="@+id/listviewAdmin"
         android:layout_width="match_parent"
-        android:layout_height="570dp"
-        android:numColumns="3">
+        android:layout_height="570dp">
 
-    </GridView>
-
+    </ListView>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
