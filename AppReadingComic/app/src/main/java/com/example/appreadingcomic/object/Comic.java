@@ -1,6 +1,9 @@
 package com.example.appreadingcomic.object;
 
-public class Comic {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Comic implements Parcelable {
     private int ID;
     private String nameComic;
     private String linkComic;
@@ -26,6 +29,25 @@ public class Comic {
         this.ID_TK = ID_TK;
     }
 
+    protected Comic(Parcel in) {
+        ID = in.readInt();
+        nameComic = in.readString();
+        linkComic = in.readString();
+        content = in.readString();
+        ID_TK = in.readInt();
+    }
+
+    public static final Creator<Comic> CREATOR = new Creator<Comic>() {
+        @Override
+        public Comic createFromParcel(Parcel in) {
+            return new Comic(in);
+        }
+
+        @Override
+        public Comic[] newArray(int size) {
+            return new Comic[size];
+        }
+    };
     public int getID() {
         return ID;
     }
@@ -64,5 +86,19 @@ public class Comic {
 
     public void setID_TK(int ID_TK) {
         this.ID_TK = ID_TK;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(ID);
+        dest.writeString(nameComic);
+        dest.writeString(linkComic);
+        dest.writeString(content);
+        dest.writeInt(ID_TK);
     }
 }

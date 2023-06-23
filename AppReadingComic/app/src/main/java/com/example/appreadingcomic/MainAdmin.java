@@ -45,6 +45,18 @@ public class MainAdmin extends AppCompatActivity {
                 return false;
             }
         });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Lấy truyện được chọn từ danh sách truyện
+                Comic selectedComic = comicArrayList.get(position);
+
+                // Chuyển sang màn hình sửa truyện và truyền thông tin truyện qua Intent
+                Intent intent = new Intent(MainAdmin.this, MainSuaBai.class);
+                intent.putExtra("comic", selectedComic);
+                startActivity(intent);
+            }
+        });
 
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +143,7 @@ public class MainAdmin extends AppCompatActivity {
         comicArrayList = new ArrayList<>();
         databaseHelper = new DatabaseHelper(this);
 
-        Cursor cursor1 = databaseHelper.getData2();
+        Cursor cursor1 = databaseHelper.getData1();
 
         while (cursor1.moveToNext()) {
             Integer id = cursor1.getInt(0);
