@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></TextView>
         <EditText
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:id="@+id/nameComic"
             android:hint="Tên truyện"
             android:layout_gravity="center"
