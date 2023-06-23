@@ -3,9 +3,11 @@ package com.example.appreadingcomic;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,9 +20,10 @@ import com.example.appreadingcomic.object.Comic;
 public class ComicDetailActivity extends AppCompatActivity {
     TextView txtNameComic,txtContent;
     ImageView imgLinkComic;
-    private Context ct;
     Button btnSubmitRating;
     Button btnSubmitComment;
+    EditText edtComment;
+    private Context ct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,7 @@ public class ComicDetailActivity extends AppCompatActivity {
         imgLinkComic = findViewById(R.id.imgComic);
         btnSubmitRating = findViewById(R.id.btnSubmitRating);
         btnSubmitComment = findViewById(R.id.btnSubmitComment);
+        edtComment = findViewById(R.id.edtComment);
 
         Intent intent = getIntent();
         String tenTruyen = intent.getStringExtra("nameComic");
@@ -54,14 +58,20 @@ public class ComicDetailActivity extends AppCompatActivity {
             }
         });
 
+        String comment = edtComment.getText().toString().trim();
         btnSubmitComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Xử lý logic đánh giá
-
-                // Hiển thị thông báo Đánh giá thành công
-                Toast.makeText(ComicDetailActivity.this, "Bình luận thành công", Toast.LENGTH_SHORT).show();
-            }
+//                if (comment.isEmpty()) {
+//                    // Nếu chuỗi rỗng, hiển thị cảnh báo
+//                    Toast.makeText(ComicDetailActivity.this, "Vui lòng nhập bình luận", Toast.LENGTH_SHORT).show();
+//                } else {
+                    // Ngược lại, xử lý logic bình luận
+                    // Hiển thị thông báo Đánh giá thành công
+                    Toast.makeText(ComicDetailActivity.this, "Bình luận thành công", Toast.LENGTH_SHORT).show();
+                }
+//            }
         });
     }
 }

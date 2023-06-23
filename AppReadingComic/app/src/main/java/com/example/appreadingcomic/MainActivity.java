@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.appreadingcomic.adapter.ComicAdapter;
 import com.example.appreadingcomic.database.DatabaseHelper;
+import com.example.appreadingcomic.object.Account;
 import com.example.appreadingcomic.object.Comic;
 
 import java.util.ArrayList;
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("nameComic", nameComic); // Truyền tên comic
         intent.putExtra("linkComic", linkComic); // Truyền URL hình ảnh comic (nếu cần)
         startActivity(intent);
+
     }
 }
 

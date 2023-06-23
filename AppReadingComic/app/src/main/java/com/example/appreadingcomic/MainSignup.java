@@ -46,7 +46,7 @@ public class MainSignup extends AppCompatActivity {
                     //Kiểm tra xem trùng tài khoản không để có thể hiển thị thông báo tài khoản trùng
 
                     databaseHelper.AddTaiKhoan(taikhoan1);
-                    //Toast.makeText(ManDangKy.this,"Đăng ký thành công ",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainSignup.this,"Đăng ký thành công ",Toast.LENGTH_SHORT).show();
                 }
             }
         });

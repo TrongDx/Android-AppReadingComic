@@ -30,6 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static  String LINK_COMIC = "linkComic";
     private Context context;
 
+
     private String SQLQuery = "CREATE TABLE "+ TABLE_TAIKHOAN +" ( "+ID_TAI_KHOAN+" INTEGER PRIMARY KEY AUTOINCREMENT, "
             +TEN_TAI_KHOAN+" TEXT UNIQUE, "
             +MAT_KHAU+" TEXT, "
@@ -42,9 +43,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             +LINK_COMIC+" TEXT, "+ID_TAI_KHOAN+" INTEGER , FOREIGN KEY ( "+ ID_TAI_KHOAN +" ) REFERENCES "+
             TABLE_TAIKHOAN+"("+ID_TAI_KHOAN+"))";
 
+    private static String TABLE_REVIEW = "review";
+    private static String COLUMN_ID = "id";
+    private static String COLUMN_REVIEWER_NAME = "review_name";
+    private static String COLUMN_COMMENT = "comment";
+    private static String COLUMN_RATING = "rating";
+    private static final String createReviewTable = "CREATE TABLE " + TABLE_REVIEW + "("
+            + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_REVIEWER_NAME + " TEXT,"
+            + COLUMN_RATING + " TEXT,"
+            + COLUMN_COMMENT + " TEXT,"
+            + ID_TAI_KHOAN + " INTEGER,"
+            + "FOREIGN KEY (" + ID_TAI_KHOAN + ") REFERENCES " + TABLE_TAIKHOAN + "(" + ID_TAI_KHOAN + ")"
+            + ")";
+
     private String SQLQuery2 = "INSERT INTO TaiKhoan VAlUES (null,'admin','admin','admin@gmail.com',2)";
-    private String SQLQuery3 = "INSERT INTO TaiKhoan VAlUES (null,'khanh','khanh','khanh@gmail.com',1)";
-    private String SQLQuery11 = "INSERT INTO TaiKhoan VAlUES (null,'su','su','su@gmail.com',1)";
+    private String SQLQuery3 = "INSERT INTO TaiKhoan VAlUES (null,'trong','trong','trong@gmail.com',1)";
+    private String SQLQuery11 = "INSERT INTO TaiKhoan VAlUES (null,'user','user','user@gmail.com',1)";
 
     private String SQLQuery4 = "INSERT INTO comic VALUES (null,'Rùa và Thỏ','Phần 1:\n" +
             "\n" +
@@ -239,6 +254,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SQLQuery8);
         db.execSQL(SQLQuery11);
 //        db.execSQL(SQLQuery9);
+        db.execSQL(createReviewTable);
     }
 
 //    public void addAdditionalData() {
@@ -302,7 +318,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor res =  db.rawQuery( "select * from "+TABLE_COMIC+" ORDER BY "+ID_COMIC+" DESC LIMIT 3" , null );
+        Cursor res =  db.rawQuery( "select * from "+TABLE_COMIC+" ORDER BY "+ID_COMIC+" DESC" , null );
         return res;
     }
 
@@ -322,5 +338,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int res = db.delete("comic",ID_COMIC+" = "+i,null);
         return res;
 
+    }
+    public int UpdateTruyen(int id, Comic comic) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(NAME_COMIC, comic.getNameComic());
+        values.put(CONTENT, comic.getContent());
+        values.put(LINK_COMIC, comic.getLinkComic());
+        values.put(ID_TAI_KHOAN, comic.getID());
+
+        int res = db.update(TABLE_COMIC, values, ID_COMIC + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+        return res;
+    }
+    public void addReview(String reviewerName, String comment, int taiKhoanId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_REVIEWER_NAME, reviewerName);
+        values.put(COLUMN_RATING, comment);
+        values.put(COLUMN_COMMENT, comment);
+        values.put(ID_TAI_KHOAN, taiKhoanId);
+        db.insert(TABLE_REVIEW, null, values);
+        db.close();
+    }
+    public Cursor getReviewsByComicId(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_REVIEW + " WHERE " + ID_TAI_KHOAN + " = " + id,null);
+        return res;
     }
 }
