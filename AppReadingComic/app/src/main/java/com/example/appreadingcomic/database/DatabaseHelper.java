@@ -19,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static String ID_TAI_KHOAN = "idtaikhoan";
     private static String TEN_TAI_KHOAN = "tentaikhoan";
     private static String MAT_KHAU = "matkhau";
-    private static String PHAN_QUYEN = "phanquyen";
+    private static String PHAN_QUYEN = "phanquyen     ";
     private static String EMAIL = "email";
     private static final int VERSION = 1;
 
