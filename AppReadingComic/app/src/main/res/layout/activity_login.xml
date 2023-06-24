@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"></TextView>
     <EditText
         android:id="@+id/username"
+        android:drawableRight="@drawable/ic_taikhoan"
         android:hint="Tài khoản"
         android:layout_marginTop="90dp"
         android:layout_gravity="center"
@@ -24,6 +25,7 @@
         android:layout_height="wrap_content"></EditText>
     <EditText
         android:inputType="textPassword"
+        android:drawableRight="@drawable/ic_matkhau"
         android:id="@+id/password"
         android:hint="Mật khẩu"
         android:layout_marginTop="20dp"

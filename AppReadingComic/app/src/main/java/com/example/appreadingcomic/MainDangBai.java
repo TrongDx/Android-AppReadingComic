@@ -12,6 +12,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.appreadingcomic.database.DatabaseHelper;
 import com.example.appreadingcomic.object.Comic;
+import com.example.appreadingcomic.retrofit.ApiServer;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainDangBai extends AppCompatActivity {
     EditText edtNameComic,edtCotent,edtLinkComic;
@@ -65,5 +72,3 @@ public class MainDangBai extends AppCompatActivity {
         return comic;
     }
 }
-
-

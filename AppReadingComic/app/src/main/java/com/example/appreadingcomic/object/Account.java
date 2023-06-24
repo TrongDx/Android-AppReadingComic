@@ -7,6 +7,12 @@ public class Account {
     private String Email;
     private int decentralization;
 
+    public Account(String userName, String email, int decentralization) {
+        this.userName = userName;
+        Email = email;
+        this.decentralization = decentralization;
+    }
+
     public Account(String userName, String passWord, String email, int decentralization) {
         this.userName = userName;
         this.passWord = passWord;

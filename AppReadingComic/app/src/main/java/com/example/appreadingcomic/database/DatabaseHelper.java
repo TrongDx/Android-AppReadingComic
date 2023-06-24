@@ -339,6 +339,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res;
 
     }
+    public Account getUserInfo(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {TEN_TAI_KHOAN, EMAIL, PHAN_QUYEN};
+        String selection = TEN_TAI_KHOAN + "=?";
+        String[] selectionArgs = {username};
+
+        Cursor cursor = db.query(TABLE_TAIKHOAN, columns, selection, selectionArgs, null, null, null);
+        Account user = null;
+
+        if (cursor.moveToFirst()) {
+            int tenTaiKhoanIndex = cursor.getColumnIndex(TEN_TAI_KHOAN);
+            int emailIndex = cursor.getColumnIndex(EMAIL);
+            int phanQuyenIndex = cursor.getColumnIndex(PHAN_QUYEN);
+
+            if (tenTaiKhoanIndex >= 0 && emailIndex >= 0 && phanQuyenIndex >= 0) {
+                String tenTaiKhoan = cursor.getString(tenTaiKhoanIndex);
+                String email = cursor.getString(emailIndex);
+                int phanQuyen = cursor.getInt(phanQuyenIndex);
+                user = new Account(tenTaiKhoan, email, phanQuyen);
+            }
+        }
+
+        cursor.close();
+        db.close();
+
+        return user;
+    }
+
     public int UpdateTruyen(int id, Comic comic) {
         SQLiteDatabase db = this.getWritableDatabase();
 
