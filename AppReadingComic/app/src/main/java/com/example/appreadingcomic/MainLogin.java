@@ -40,7 +40,6 @@ public class MainLogin extends AppCompatActivity {
             public void onClick(View v) {
                 String tentaikhoan = edtUserName.getText().toString();
                 String matkhau = edtPassword.getText().toString();
-
                 Cursor cursor = databaseHelper.getData();
                 while (cursor.moveToNext()) {
                     String datatentaikhoan = cursor.getString(1);
@@ -51,11 +50,15 @@ public class MainLogin extends AppCompatActivity {
                     String email = cursor.getString(3);
 
                     if (datatentaikhoan.equals(tentaikhoan) && datamatkhau.equals(matkhau)) {
+
                         if (phanquyen == 2) {
                             Intent intent = new Intent(MainLogin.this, MainAdmin.class);
                             intent.putExtra("idd", idd);
                             intent.putExtra("email", email);
                             intent.putExtra("tentaikhoan", tentk);
+                            // Truyền thông tin người dùng
+                            String loggedInUsername = edtUserName.getText().toString().trim();
+                            intent.putExtra("loggedInUsername", loggedInUsername);
                             startActivity(intent);
                             Log.e("Đăng nhập: ", "Thành công (Admin)");
                         } else if (phanquyen == 1) {
@@ -63,6 +66,8 @@ public class MainLogin extends AppCompatActivity {
                             intent.putExtra("idd", idd);
                             intent.putExtra("email", email);
                             intent.putExtra("tentaikhoan", tentk);
+                            String loggedInUsername = edtUserName.getText().toString().trim();
+                            intent.putExtra("loggedInUsername", loggedInUsername);
                             startActivity(intent);
                             Log.e("Đăng nhập: ", "Thành công");
                         }

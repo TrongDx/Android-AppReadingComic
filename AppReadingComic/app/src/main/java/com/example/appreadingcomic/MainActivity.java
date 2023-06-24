@@ -3,8 +3,11 @@ package com.example.appreadingcomic;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,8 +24,21 @@ import com.example.appreadingcomic.adapter.ComicAdapter;
 import com.example.appreadingcomic.database.DatabaseHelper;
 import com.example.appreadingcomic.object.Account;
 import com.example.appreadingcomic.object.Comic;
+import com.example.appreadingcomic.object.ComicModel;
+import com.example.appreadingcomic.retrofit.ApiServer;
+import com.example.appreadingcomic.retrofit.RetrofitClient;
+import com.example.appreadingcomic.utils.Utils;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
     GridView gdvListComic;
@@ -31,14 +47,25 @@ public class MainActivity extends AppCompatActivity {
     EditText edSearch;
     DatabaseHelper databaseHelper;
     ImageView btnUser;
-
+    ImageView btnHome;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    String loggedInUsername; // Biến lưu trữ tên người dùng đã đăng nhập
+    ApiServer apiServer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        apiServer = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiServer.class);
+
         anhXa();
         setUp();
         setClick();
+
+        if(isConnected(this)){
+            Toast.makeText(getApplicationContext(), "Internet is Connect", Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(getApplicationContext(), "khong co internet", Toast.LENGTH_LONG).show();
+        }
 
         databaseHelper = new DatabaseHelper(this);
 
@@ -57,12 +84,18 @@ public class MainActivity extends AppCompatActivity {
         }
         adapter = new ComicAdapter(this,  comicArrayList);
         gdvListComic.setAdapter(adapter);
-    }
 
+        // Nhận giá trị loggedInUsername từ Intent (nếu có)
+        Intent intent = getIntent();
+        if (intent != null) {
+            loggedInUsername = intent.getStringExtra("loggedInUsername");
+        }
+    }
     private void anhXa() {
         gdvListComic = findViewById(R.id.gdvListComic);
         edSearch = findViewById(R.id.edSearch);
         btnUser = findViewById(R.id.btnUser);
+        btnHome = findViewById(R.id.btnHome);
     }
 
     private void setUp() {
@@ -114,7 +147,14 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         int itemId = item.getItemId();
                         if (itemId == R.id.menu_option1) {
-                            // Xử lý logic khi chọn option 1
+                            // Lấy thông tin người dùng đã đăng nhập từ Intent
+                            Intent intent = getIntent();
+                            String loggedInUsername = intent.getStringExtra("loggedInUsername");
+
+                            // Tạo Intent để chuyển từ MainActivity sang UserInfoActivity
+                            Intent userInfoIntent = new Intent(MainActivity.this, UserInfoActivity.class);
+                            userInfoIntent.putExtra("loggedInUsername", loggedInUsername);
+                            startActivity(userInfoIntent);
                             return true;
                         } else if (itemId == R.id.menu_option4) {
                             // Xử lý logic khi chọn option 4
@@ -131,7 +171,55 @@ public class MainActivity extends AppCompatActivity {
                 popupMenu.show();
             }
         });
+        btnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
+    private void getComicListFromServer() {
+        Call<List<Comic>> call = apiServer.getComic();
+        call.enqueue(new Callback<List<Comic>>() {
+            @Override
+            public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
+                if (response.isSuccessful()) {
+                    List<Comic> comicList = response.body();
+                    // Xử lý danh sách comic nhận được từ server
+                    if (comicList != null) {
+                        comicArrayList.clear();
+                        for (Comic comic : comicList) {
+                            int id = comic.getID();
+                            String nameComic = comic.getNameComic();
+                            String contentComic = comic.getContent();
+                            String linkComic = comic.getLinkComic();
+
+                            // Create a new Comic object with the extracted data
+                            Comic updatedComic = new Comic(id, nameComic, contentComic, linkComic);
+
+                            // Add the updatedComic to the comicArrayList
+                            comicArrayList.add(updatedComic);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                } else {
+                    // Xử lý lỗi
+                    Toast.makeText(MainActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Comic>> call, Throwable t) {
+                // Xử lý lỗi kết nối
+                Toast.makeText(MainActivity.this, "Failed to fetch comic data: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
 
     private void displayComicContent(Comic comic) {
         // Ở đây, bạn có thể thực hiện các hành động như chuyển sang màn hình mới để hiển thị nội dung của truyện,
@@ -145,5 +233,17 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+    private boolean isConnected(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifi = connectivityManager.getNetworkInfo((ConnectivityManager.TYPE_WIFI));
+        NetworkInfo mobile = connectivityManager.getNetworkInfo((ConnectivityManager.TYPE_MOBILE));
+        if((wifi != null && wifi.isConnected()) || (mobile != null && mobile.isConnected())){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 }
 

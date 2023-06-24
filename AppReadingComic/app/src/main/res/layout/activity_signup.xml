@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"></TextView>
     <EditText
         android:id="@+id/dkUserName"
+        android:drawableRight="@drawable/ic_taikhoan"
         android:hint="Tài Khoản"
         android:layout_marginTop="90dp"
         android:layout_gravity="center"
@@ -24,6 +25,7 @@
         android:layout_height="wrap_content"></EditText>
     <EditText
         android:id="@+id/dkPassword"
+        android:drawableRight="@drawable/ic_matkhau"
         android:hint="Mật Khẩu"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
@@ -31,6 +33,7 @@
         android:layout_height="wrap_content"></EditText>
     <EditText
         android:id="@+id/dkEmail"
+        android:drawableRight="@drawable/ic_email"
         android:hint="Email"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
