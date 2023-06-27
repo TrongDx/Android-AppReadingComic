@@ -395,4 +395,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("SELECT * FROM " + TABLE_REVIEW + " WHERE " + ID_TAI_KHOAN + " = " + id,null);
         return res;
     }
+
+    public boolean checkCredentials(String username, String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " +TABLE_TAIKHOAN + " WHERE " + TEN_TAI_KHOAN + " = ? AND " + EMAIL + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{username, email});
+
+        boolean result = cursor.getCount() > 0;
+
+        cursor.close();
+        return result;
+    }
+    public boolean updatePassword(String username, String newPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(MAT_KHAU, newPassword);
+
+        String whereClause = TEN_TAI_KHOAN + " = ?";
+        String[] whereArgs = {username};
+
+        int rowsAffected = db.update(TABLE_TAIKHOAN, values, whereClause, whereArgs);
+
+        return rowsAffected > 0;
+    }
+
+
 }

@@ -16,7 +16,7 @@ import com.example.appreadingcomic.database.DatabaseHelper;
 public class MainLogin extends AppCompatActivity {
     EditText edtUserName, edtPassword;
     Button btnLogin, btnSignup;
-
+    Button btnResetPass;
     DatabaseHelper databaseHelper;
 
     @Override
@@ -80,6 +80,13 @@ public class MainLogin extends AppCompatActivity {
                 cursor.close();
             }
         });
+        btnResetPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainLogin.this, ResetPassActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void AnhXa() {
@@ -87,5 +94,6 @@ public class MainLogin extends AppCompatActivity {
         edtPassword = findViewById(R.id.password);
         btnLogin = findViewById(R.id.login);
         btnSignup = findViewById(R.id.signup);
+        btnResetPass = findViewById(R.id.QuenMK);
     }
 }
