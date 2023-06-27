@@ -20,30 +20,36 @@
             android:text="Đăng bài"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></TextView>
+
         <EditText
-            android:inputType="textMultiLine"
             android:id="@+id/nameComic"
-            android:hint="Tên truyện"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"></EditText>
-        <EditText
+            android:hint="Tên truyện"
             android:inputType="textMultiLine"
-            android:id="@+id/contentComic"
-            android:hint="Nội dung"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"></EditText>
+            android:minHeight="48dp"></EditText>
+
         <EditText
-            android:inputType="textUri"
-            android:hint="Ảnh"
-            android:id="@+id/linkComic"
+            android:id="@+id/contentComic"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
+            android:hint="Nội dung"
+            android:inputType="textMultiLine"
+            android:minHeight="48dp"></EditText>
+
+        <EditText
+            android:id="@+id/linkComic"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"></EditText>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:hint="Ảnh"
+            android:inputType="textUri"
+            android:minHeight="48dp"></EditText>
         <Button
             android:id="@+id/dbdangbai"
             android:layout_gravity="center"
