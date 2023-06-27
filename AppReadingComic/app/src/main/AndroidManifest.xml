@@ -20,6 +20,7 @@
         <activity android:name=".MainSignup" />
         <activity android:name=".MainActivity" />
         <activity android:name=".UserInfoActivity" />
+        <activity android:name=".ResetPassActivity" />
         <activity android:name=".MainLogin"
             android:exported="true">
             <intent-filter>
