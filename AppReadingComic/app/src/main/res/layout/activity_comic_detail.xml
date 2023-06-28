@@ -38,6 +38,13 @@
             android:layout_marginTop="8dp"
             android:textSize="16sp"
             tools:text="Content" />
+        <TextView
+            android:id="@+id/tvComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Bình luận của người dùng:"
+            android:textSize="16sp" />
 
         <!-- Phần đánh giá -->
         <TextView
