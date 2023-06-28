@@ -43,19 +43,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             +LINK_COMIC+" TEXT, "+ID_TAI_KHOAN+" INTEGER , FOREIGN KEY ( "+ ID_TAI_KHOAN +" ) REFERENCES "+
             TABLE_TAIKHOAN+"("+ID_TAI_KHOAN+"))";
 
-    private static String TABLE_REVIEW = "review";
-    private static String COLUMN_ID = "id";
-    private static String COLUMN_REVIEWER_NAME = "review_name";
-    private static String COLUMN_COMMENT = "comment";
-    private static String COLUMN_RATING = "rating";
-    private static final String createReviewTable = "CREATE TABLE " + TABLE_REVIEW + "("
+    public static String TABLE_REVIEW = "review";
+    public static String COLUMN_ID = "id";
+    public static String COLUMN_REVIEWER_NAME = "review_name";
+    public static String COLUMN_COMMENT = "comment";
+    public static final String createReviewTable = "CREATE TABLE " + TABLE_REVIEW + "("
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_REVIEWER_NAME + " TEXT,"
-            + COLUMN_RATING + " TEXT,"
-            + COLUMN_COMMENT + " TEXT,"
-            + ID_TAI_KHOAN + " INTEGER,"
-            + "FOREIGN KEY (" + ID_TAI_KHOAN + ") REFERENCES " + TABLE_TAIKHOAN + "(" + ID_TAI_KHOAN + ")"
-            + ")";
+            + COLUMN_COMMENT + " TEXT)";
 
     private String SQLQuery2 = "INSERT INTO TaiKhoan VAlUES (null,'admin','admin','admin@gmail.com',2)";
     private String SQLQuery3 = "INSERT INTO TaiKhoan VAlUES (null,'trong','trong','trong@gmail.com',1)";
@@ -378,21 +373,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         int res = db.update(TABLE_COMIC, values, ID_COMIC + " = ?", new String[]{String.valueOf(id)});
         db.close();
-        return res;
-    }
-    public void addReview(String reviewerName, String comment, int taiKhoanId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_REVIEWER_NAME, reviewerName);
-        values.put(COLUMN_RATING, comment);
-        values.put(COLUMN_COMMENT, comment);
-        values.put(ID_TAI_KHOAN, taiKhoanId);
-        db.insert(TABLE_REVIEW, null, values);
-        db.close();
-    }
-    public Cursor getReviewsByComicId(int id){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_REVIEW + " WHERE " + ID_TAI_KHOAN + " = " + id,null);
         return res;
     }
 

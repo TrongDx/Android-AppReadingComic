@@ -18,7 +18,7 @@ public class MainLogin extends AppCompatActivity {
     Button btnLogin, btnSignup;
     Button btnResetPass;
     DatabaseHelper databaseHelper;
-
+    public String loggedInUsername;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +41,8 @@ public class MainLogin extends AppCompatActivity {
                 String tentaikhoan = edtUserName.getText().toString();
                 String matkhau = edtPassword.getText().toString();
                 Cursor cursor = databaseHelper.getData();
+                boolean isLoggedIn = false; // Biến kiểm tra trạng thái đăng nhập
+
                 while (cursor.moveToNext()) {
                     String datatentaikhoan = cursor.getString(1);
                     String datamatkhau = cursor.getString(2);
@@ -50,15 +52,13 @@ public class MainLogin extends AppCompatActivity {
                     String email = cursor.getString(3);
 
                     if (datatentaikhoan.equals(tentaikhoan) && datamatkhau.equals(matkhau)) {
-
+                        isLoggedIn = true; // Đánh dấu đăng nhập thành công
+                        loggedInUsername = tentaikhoan;
                         if (phanquyen == 2) {
                             Intent intent = new Intent(MainLogin.this, MainAdmin.class);
                             intent.putExtra("idd", idd);
                             intent.putExtra("email", email);
                             intent.putExtra("tentaikhoan", tentk);
-                            // Truyền thông tin người dùng
-                            String loggedInUsername = edtUserName.getText().toString().trim();
-                            intent.putExtra("loggedInUsername", loggedInUsername);
                             startActivity(intent);
                             Log.e("Đăng nhập: ", "Thành công (Admin)");
                         } else if (phanquyen == 1) {
@@ -66,20 +66,22 @@ public class MainLogin extends AppCompatActivity {
                             intent.putExtra("idd", idd);
                             intent.putExtra("email", email);
                             intent.putExtra("tentaikhoan", tentk);
-                            String loggedInUsername = edtUserName.getText().toString().trim();
-                            intent.putExtra("loggedInUsername", loggedInUsername);
                             startActivity(intent);
                             Log.e("Đăng nhập: ", "Thành công");
                         }
-                        return;
+                        break;
                     }
                 }
 
                 // Nếu không tìm thấy tài khoản đăng nhập
-                Log.e("Đăng nhập: ", "Không thành công");
+                if (!isLoggedIn) {
+                    Log.e("Đăng nhập: ", "Không thành công");
+                }
+
                 cursor.close();
             }
         });
+
         btnResetPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
