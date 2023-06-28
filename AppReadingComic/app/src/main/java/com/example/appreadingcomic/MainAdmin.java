@@ -29,6 +29,7 @@ public class MainAdmin extends AppCompatActivity {
     ComicAdapter comicAdapter;
     DatabaseHelper databaseHelper;
     ImageView btnUser;
+    ImageView btnHome;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +37,7 @@ public class MainAdmin extends AppCompatActivity {
         btnUser = findViewById(R.id.btnUserAdmin);
         listView = findViewById(R.id.listviewAdmin);
         buttonAdd = findViewById(R.id.btnAddComic);
+        btnHome = findViewById(R.id.btnHome);
         databaseHelper = new DatabaseHelper(this);
         initList();
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -82,6 +84,14 @@ public class MainAdmin extends AppCompatActivity {
                         int itemId = item.getItemId();
                         if (itemId == R.id.menu_option1) {
                             // Xử lý logic khi chọn option 1
+                            // Lấy thông tin người dùng đã đăng nhập từ Intent
+                            Intent intent = getIntent();
+                            String loggedInUsername = intent.getStringExtra("loggedInUsername");
+
+                            // Tạo Intent để chuyển từ MainActivity sang UserInfoActivity
+                            Intent userInfoIntent = new Intent(MainAdmin.this, UserInfoActivity.class);
+                            userInfoIntent.putExtra("loggedInUsername", loggedInUsername);
+                            startActivity(userInfoIntent);
                             return true;
                         } else if (itemId == R.id.menu_option4) {
                             // Xử lý logic khi chọn option 4
@@ -96,6 +106,13 @@ public class MainAdmin extends AppCompatActivity {
                 });
 
                 popupMenu.show();
+            }
+        });
+        btnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainAdmin.this, MainAdmin.class);
+                startActivity(intent);
             }
         });
     }

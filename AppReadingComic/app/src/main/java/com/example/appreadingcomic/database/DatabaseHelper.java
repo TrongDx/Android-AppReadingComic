@@ -339,6 +339,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res;
 
     }
+    public Account getUserInfo(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {TEN_TAI_KHOAN, EMAIL, PHAN_QUYEN};
+        String selection = TEN_TAI_KHOAN + "=?";
+        String[] selectionArgs = {username};
+
+        Cursor cursor = db.query(TABLE_TAIKHOAN, columns, selection, selectionArgs, null, null, null);
+        Account user = null;
+
+        if (cursor.moveToFirst()) {
+            int tenTaiKhoanIndex = cursor.getColumnIndex(TEN_TAI_KHOAN);
+            int emailIndex = cursor.getColumnIndex(EMAIL);
+            int phanQuyenIndex = cursor.getColumnIndex(PHAN_QUYEN);
+
+            if (tenTaiKhoanIndex >= 0 && emailIndex >= 0 && phanQuyenIndex >= 0) {
+                String tenTaiKhoan = cursor.getString(tenTaiKhoanIndex);
+                String email = cursor.getString(emailIndex);
+                int phanQuyen = cursor.getInt(phanQuyenIndex);
+                user = new Account(tenTaiKhoan, email, phanQuyen);
+            }
+        }
+
+        cursor.close();
+        db.close();
+
+        return user;
+    }
+
     public int UpdateTruyen(int id, Comic comic) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -367,4 +395,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("SELECT * FROM " + TABLE_REVIEW + " WHERE " + ID_TAI_KHOAN + " = " + id,null);
         return res;
     }
+
+    public boolean checkCredentials(String username, String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " +TABLE_TAIKHOAN + " WHERE " + TEN_TAI_KHOAN + " = ? AND " + EMAIL + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{username, email});
+
+        boolean result = cursor.getCount() > 0;
+
+        cursor.close();
+        return result;
+    }
+    public boolean updatePassword(String username, String newPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(MAT_KHAU, newPassword);
+
+        String whereClause = TEN_TAI_KHOAN + " = ?";
+        String[] whereArgs = {username};
+
+        int rowsAffected = db.update(TABLE_TAIKHOAN, values, whereClause, whereArgs);
+
+        return rowsAffected > 0;
+    }
+
+
 }
